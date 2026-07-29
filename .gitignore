@@ -512,3 +512,20 @@ $RECYCLE.BIN/
 *.swp
 P R O J E C T _ I N D E X . m d  
  
+# Backend C# / ASP.NET MVC files (Must never be committed to public CDN)
+App_Data/
+App_Start/
+Content/
+Controllers/
+Models/
+Properties/
+Scripts/
+Views/
+*.asax
+*.asax.cs
+*.config
+*.csproj
+*.slnx
+*.ico
+packages.config
+PROJECT_INDEX.md
