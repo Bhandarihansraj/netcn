@@ -3,90 +3,261 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>netcn — .NET Toolbox CDN</title>
+    <title>netcn — Premium .NET Toolbox CDN</title>
     <meta name="description" content="A data-driven CDN for .NET toolbox components. Add tools to any project with just 2 lines of HTML." />
     <link rel="stylesheet" href="cdn/toolbox.css" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: #0d1117; color: #c9d1d9; min-height: 100vh; }
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap');
+        
+        :root {
+            --bg-primary: #050505;
+            --bg-secondary: #111111;
+            --accent-primary: #3b82f6;
+            --accent-secondary: #8b5cf6;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(59, 130, 246, 0.3);
+            --glass-bg: rgba(17, 17, 17, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background: var(--bg-primary); 
+            color: var(--text-main); 
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.08), transparent 25%);
+        }
+
+        /* Nav */
+        nav {
+            padding: 24px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--glass-border);
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(12px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav .logo { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.5px; }
+        nav .logo span { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 600; transition: color 0.2s; }
+        nav a:hover { color: var(--text-main); }
+
+        /* Hero */
         .hero {
             text-align: center;
-            padding: 60px 24px 40px;
-            background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+            padding: 100px 24px 60px;
+            position: relative;
         }
-        .hero h1 { font-size: 2.8rem; font-weight: 800; color: #f0f6fc; letter-spacing: -1px; margin-bottom: 12px; }
-        .hero h1 span { background: linear-gradient(135deg, #f1c40f, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero p { font-size: 1.1rem; color: #8b949e; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
-
-        .code-block {
-            background: #161b22; border: 1px solid #30363d; border-radius: 12px;
-            padding: 20px 28px; max-width: 700px; margin: 0 auto 48px; text-align: left;
-            font-family: 'Consolas', 'Monaco', monospace; font-size: 0.85rem; color: #79c0ff; line-height: 1.8; overflow-x: auto;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: 50%;
+            transform: translateX(-50%);
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.15) 0%, transparent 60%);
+            z-index: -1;
         }
-        .code-block .comment { color: #8b949e; }
-        .code-block .tag { color: #7ee787; }
-        .code-block .attr { color: #d2a8ff; }
-        .code-block .str { color: #a5d6ff; }
+        .hero h1 { 
+            font-size: 4rem; 
+            font-weight: 800; 
+            letter-spacing: -2px; 
+            margin-bottom: 24px; 
+            line-height: 1.1;
+        }
+        .hero p { 
+            font-size: 1.25rem; 
+            color: var(--text-muted); 
+            max-width: 650px; 
+            margin: 0 auto 48px; 
+            line-height: 1.6; 
+            font-weight: 300;
+        }
 
-        .section-title { text-align: center; font-size: 1.3rem; font-weight: 700; color: #f0f6fc; margin-bottom: 8px; padding-top: 48px; }
-        .section-subtitle { text-align: center; color: #8b949e; margin-bottom: 32px; font-size: 0.9rem; }
-        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
+        /* Code Terminal */
+        .terminal {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 0;
+            max-width: 800px;
+            margin: 0 auto 80px;
+            text-align: left;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            transform: translateY(0);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .terminal:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6), 0 0 20px rgba(59, 130, 246, 0.2);
+        }
+        .terminal-header {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot.r { background: #ff5f56; } .dot.y { background: #ffbd2e; } .dot.g { background: #27c93f; }
+        
+        .code-content {
+            padding: 24px 32px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            line-height: 1.8;
+            overflow-x: auto;
+        }
+        .code-content .comment { color: #64748b; font-style: italic; }
+        .code-content .tag { color: #f43f5e; }
+        .code-content .attr { color: #38bdf8; }
+        .code-content .str { color: #a3e635; }
 
-        footer { text-align: center; padding: 32px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; }
-        footer a { color: #58a6ff; text-decoration: none; }
+        /* Sections */
+        .showcase {
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 0 24px 100px;
+        }
+        .section-header {
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        .section-title { 
+            font-size: 2rem; 
+            font-weight: 800; 
+            color: var(--text-main); 
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .section-title::before {
+            content: '';
+            display: block;
+            width: 8px;
+            height: 32px;
+            background: linear-gradient(180deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 4px;
+        }
+        .section-subtitle { 
+            color: var(--text-muted); 
+            font-size: 1.1rem; 
+            margin-top: 12px;
+            padding-left: 20px;
+        }
+        
+        .tool-wrapper {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            margin-bottom: 80px;
+            backdrop-filter: blur(10px);
+        }
+
+        footer { 
+            text-align: center; 
+            padding: 48px 24px; 
+            color: var(--text-muted); 
+            font-size: 0.9rem; 
+            border-top: 1px solid var(--glass-border); 
+            background: rgba(0,0,0,0.3);
+        }
+        footer a { color: var(--accent-primary); text-decoration: none; font-weight: 600; }
+        footer a:hover { text-decoration: underline; }
+
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
     </style>
 </head>
 <body>
 
+    <nav>
+        <div class="logo">net<span>cn</span></div>
+        <a href="https://github.com/Bhandarihansraj/netcn" target="_blank">GitHub Repository →</a>
+    </nav>
+
     <div class="hero">
-        <h1>🚀 <span>netcn</span> Toolbox CDN</h1>
-        <p>A data-driven CDN for .NET toolbox components. Add interactive tools to <strong>any project</strong> with just 2 lines of HTML. No backend required.</p>
-        <div class="code-block">
-            <span class="comment">&lt;!-- Step 1: Include the CDN --&gt;</span><br />
-            <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"https://bhandarihansraj.github.io/netcn/cdn/toolbox.css"</span> <span class="tag">/&gt;</span><br />
-            <span class="tag">&lt;script</span> <span class="attr">src=</span><span class="str">"https://bhandarihansraj.github.io/netcn/cdn/toolbox-engine.js"</span><span class="tag">&gt;&lt;/script&gt;</span><br /><br />
-            <span class="comment">&lt;!-- Step 2: Drop a div and you're done! --&gt;</span><br />
-            <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"netcn-toolbox"</span> <span class="attr">data-tool=</span><span class="str">"parking-lot"</span><span class="tag">&gt;&lt;/div&gt;</span><br />
-            <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"netcn-toolbox"</span> <span class="attr">data-tool=</span><span class="str">"standard-controls"</span><span class="tag">&gt;&lt;/div&gt;</span>
+        <h1>The Ultimate <br/><span>.NET CDN Engine</span></h1>
+        <p>Integrate industry-standard templates, an absolute-positioned canvas designer, and interactive data-driven tools directly into your browser with zero backend dependencies.</p>
+        
+        <div class="terminal">
+            <div class="terminal-header">
+                <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+            </div>
+            <div class="code-content">
+                <span class="comment">&lt;!-- 1. Include the CDN Engine --&gt;</span><br />
+                <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"https://bhandarihansraj.github.io/netcn/cdn/toolbox.css"</span> <span class="tag">/&gt;</span><br />
+                <span class="tag">&lt;script</span> <span class="attr">src=</span><span class="str">"https://bhandarihansraj.github.io/netcn/cdn/toolbox-engine.js"</span><span class="tag">&gt;&lt;/script&gt;</span><br /><br />
+                <span class="comment">&lt;!-- 2. Mount your tools --&gt;</span><br />
+                <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"netcn-toolbox"</span> <span class="attr">data-tool=</span><span class="str">"standard-controls"</span><span class="tag">&gt;&lt;/div&gt;</span><br />
+                <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"netcn-toolbox"</span> <span class="attr">data-tool=</span><span class="str">"parking-lot"</span><span class="tag">&gt;&lt;/div&gt;</span>
+            </div>
         </div>
     </div>
 
-    <!-- TOOL 1: ASP.NET Project Generator -->
-    <h2 class="section-title">⚡ Project Generator</h2>
-    <p class="section-subtitle">Customize and download ready-to-run ASP.NET projects instantly (like Spring Initializr).</p>
-    <div class="demo-container">
-        <div class="netcn-toolbox" data-tool="aspnet-generator"></div>
-    </div>
+    <div class="showcase">
+        
+        <!-- TOOL 1: Unified Canvas Designer -->
+        <div class="section-header">
+            <h2 class="section-title">Unified Visual Studio Canvas</h2>
+            <p class="section-subtitle">Absolute positioning. Inline property editing. One-click ASP.NET project generation. Drag and drop controls anywhere on the board.</p>
+        </div>
+        <div class="tool-wrapper">
+            <div class="netcn-toolbox" data-tool="standard-controls"></div>
+        </div>
+        
+        <!-- TOOL 2: ASP.NET Generator (Industry Templates) -->
+        <div class="section-header">
+            <h2 class="section-title">Industry C# Templates</h2>
+            <p class="section-subtitle">Generate Clean Architecture, Web API, and MVC CRUD scaffolding instantly.</p>
+        </div>
+        <div class="tool-wrapper">
+            <div class="netcn-toolbox" data-tool="aspnet-generator"></div>
+        </div>
 
-    <!-- TOOL 2: Standard Controls -->
-    <h2 class="section-title">⚙️ Standard Controls</h2>
-    <p class="section-subtitle">Drag controls from the toolbox and drop them onto the live canvas — just like Visual Studio!</p>
-    <div class="demo-container">
-        <div class="netcn-toolbox" data-tool="standard-controls"></div>
-    </div>
+        <!-- TOOL 3: Parking Lot -->
+        <div class="section-header">
+            <h2 class="section-title">Enterprise Parking Lot</h2>
+            <p class="section-subtitle">Drag-and-drop Kanban board with persistent state management and non-destructive archiving.</p>
+        </div>
+        <div class="tool-wrapper">
+            <div class="netcn-toolbox" data-tool="parking-lot"></div>
+        </div>
 
-    <!-- TOOL 2: ASP.NET Practicals -->
-    <h2 class="section-title">📚 ASP.NET Practicals (1 to 9)</h2>
-    <p class="section-subtitle">All 9 ASP.NET practicals with C# code + live interactive demos. Try them!</p>
-    <div class="demo-container">
-        <div class="netcn-toolbox" data-tool="aspnet-practicals"></div>
-    </div>
+        <!-- TOOL 4: ASP.NET Practicals -->
+        <div class="section-header">
+            <h2 class="section-title">Interactive C# Practicals</h2>
+            <p class="section-subtitle">Test and review classic ASP.NET code snippets live in the browser.</p>
+        </div>
+        <div class="tool-wrapper">
+            <div class="netcn-toolbox" data-tool="aspnet-practicals"></div>
+        </div>
 
-    <!-- TOOL 3: Parking Lot -->
-    <h2 class="section-title">🅿️ Parking Lot</h2>
-    <p class="section-subtitle">Add, edit, remove, and drag cards between zones. State is saved automatically.</p>
-    <div class="demo-container">
-        <div class="netcn-toolbox" data-tool="parking-lot"></div>
     </div>
 
     <footer>
-        Built with ❤️ by <a href="https://github.com/Bhandarihansraj" target="_blank">Bhandarihansraj</a>
-        &nbsp;·&nbsp;
-        <a href="https://github.com/Bhandarihansraj/netcn" target="_blank">View on GitHub</a>
+        <p>Built with precision by <a href="https://github.com/Bhandarihansraj" target="_blank">Bhandarihansraj</a></p>
     </footer>
 
+    <!-- JSZip for the Canvas Generator -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="cdn/toolbox-engine.js"></script>
 </body>
