@@ -8,8 +8,16 @@
       "name": "Hello World Project",
       "description": "A basic ASP.NET project that displays Hello World.",
       "fields": [
-        { "id": "pageTitle", "label": "Page Title", "default": "Hello World App" },
-        { "id": "messageText", "label": "Message Text", "default": "Hello World" }
+        {
+          "id": "pageTitle",
+          "label": "Page Title",
+          "default": "Hello World App"
+        },
+        {
+          "id": "messageText",
+          "label": "Message Text",
+          "default": "Hello World"
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{pageTitle}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>{{messageText}}</div>\n    </form>\n</body>\n</html>",
@@ -22,8 +30,16 @@
       "name": "Page Load Event",
       "description": "Writes a message directly to the response on page load.",
       "fields": [
-        { "id": "pageTitle", "label": "Page Title", "default": "Page Load Event App" },
-        { "id": "messageText", "label": "Message Text", "default": "Welcome to ASP.NET" }
+        {
+          "id": "pageTitle",
+          "label": "Page Title",
+          "default": "Page Load Event App"
+        },
+        {
+          "id": "messageText",
+          "label": "Message Text",
+          "default": "Welcome to ASP.NET"
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{pageTitle}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div></div>\n    </form>\n</body>\n</html>",
@@ -36,8 +52,16 @@
       "name": "Label Control on Load",
       "description": "Updates a label control on page load.",
       "fields": [
-        { "id": "pageTitle", "label": "Page Title", "default": "Label Control App" },
-        { "id": "messageText", "label": "Message Text", "default": "Label initialized on Page_Load" }
+        {
+          "id": "pageTitle",
+          "label": "Page Title",
+          "default": "Label Control App"
+        },
+        {
+          "id": "messageText",
+          "label": "Message Text",
+          "default": "Label initialized on Page_Load"
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{pageTitle}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>\n            <asp:Label ID=\"Label1\" runat=\"server\" Text=\"\"></asp:Label>\n        </div>\n    </form>\n</body>\n</html>",
@@ -50,10 +74,26 @@
       "name": "Button Click",
       "description": "Updates a label when a button is clicked.",
       "fields": [
-        { "id": "pageTitle", "label": "Page Title", "default": "Button Click App" },
-        { "id": "buttonText", "label": "Button Text", "default": "Click Me" },
-        { "id": "initialLabelText", "label": "Initial Label Text", "default": "Waiting for click..." },
-        { "id": "clickMessage", "label": "Click Message", "default": "Button was clicked!" }
+        {
+          "id": "pageTitle",
+          "label": "Page Title",
+          "default": "Button Click App"
+        },
+        {
+          "id": "buttonText",
+          "label": "Button Text",
+          "default": "Click Me"
+        },
+        {
+          "id": "initialLabelText",
+          "label": "Initial Label Text",
+          "default": "Waiting for click..."
+        },
+        {
+          "id": "clickMessage",
+          "label": "Click Message",
+          "default": "Button was clicked!"
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{pageTitle}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>\n            <asp:Label ID=\"Label1\" runat=\"server\" Text=\"{{initialLabelText}}\"></asp:Label>\n            <br /><br />\n            <asp:Button ID=\"Button1\" runat=\"server\" Text=\"{{buttonText}}\" OnClick=\"Button1_Click\" />\n        </div>\n    </form>\n</body>\n</html>",
@@ -66,11 +106,31 @@
       "name": "String Concatenation",
       "description": "Concatenates two strings from textboxes on button click.",
       "fields": [
-        { "id": "title", "label": "Title", "default": "String Concatenation" },
-        { "id": "label1", "label": "Label 1", "default": "First String:" },
-        { "id": "label2", "label": "Label 2", "default": "Second String:" },
-        { "id": "buttonText", "label": "Button Text", "default": "Concatenate" },
-        { "id": "resultPrefix", "label": "Result Prefix", "default": "Result: " }
+        {
+          "id": "title",
+          "label": "Title",
+          "default": "String Concatenation"
+        },
+        {
+          "id": "label1",
+          "label": "Label 1",
+          "default": "First String:"
+        },
+        {
+          "id": "label2",
+          "label": "Label 2",
+          "default": "Second String:"
+        },
+        {
+          "id": "buttonText",
+          "label": "Button Text",
+          "default": "Concatenate"
+        },
+        {
+          "id": "resultPrefix",
+          "label": "Result Prefix",
+          "default": "Result: "
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{title}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>\n            <h2>{{title}}</h2>\n            {{label1}} <asp:TextBox ID=\"TextBox1\" runat=\"server\"></asp:TextBox>\n            <br /><br />\n            {{label2}} <asp:TextBox ID=\"TextBox2\" runat=\"server\"></asp:TextBox>\n            <br /><br />\n            <asp:Button ID=\"Button1\" runat=\"server\" Text=\"{{buttonText}}\" OnClick=\"Button1_Click\" />\n            <br /><br />\n            <asp:Label ID=\"ResultLabel\" runat=\"server\" Text=\"\"></asp:Label>\n        </div>\n    </form>\n</body>\n</html>",
@@ -83,10 +143,26 @@
       "name": "Power Calculator",
       "description": "Calculates a to the power of b.",
       "fields": [
-        { "id": "title", "label": "Title", "default": "Power Calculator" },
-        { "id": "baseLabel", "label": "Base Label", "default": "Base (a):" },
-        { "id": "powerLabel", "label": "Power Label", "default": "Exponent (b):" },
-        { "id": "buttonText", "label": "Button Text", "default": "Calculate" }
+        {
+          "id": "title",
+          "label": "Title",
+          "default": "Power Calculator"
+        },
+        {
+          "id": "baseLabel",
+          "label": "Base Label",
+          "default": "Base (a):"
+        },
+        {
+          "id": "powerLabel",
+          "label": "Power Label",
+          "default": "Exponent (b):"
+        },
+        {
+          "id": "buttonText",
+          "label": "Button Text",
+          "default": "Calculate"
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{title}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>\n            <h2>{{title}}</h2>\n            {{baseLabel}} <asp:TextBox ID=\"BaseTextBox\" runat=\"server\"></asp:TextBox>\n            <br /><br />\n            {{powerLabel}} <asp:TextBox ID=\"PowerTextBox\" runat=\"server\"></asp:TextBox>\n            <br /><br />\n            <asp:Button ID=\"CalculateButton\" runat=\"server\" Text=\"{{buttonText}}\" OnClick=\"CalculateButton_Click\" />\n            <br /><br />\n            <asp:Label ID=\"ResultLabel\" runat=\"server\" Text=\"\"></asp:Label>\n        </div>\n    </form>\n</body>\n</html>",
@@ -99,11 +175,31 @@
       "name": "Marks Calculator",
       "description": "Calculates total marks and percentage for 3 subjects.",
       "fields": [
-        { "id": "title", "label": "Title", "default": "Marks Calculator" },
-        { "id": "sub1Label", "label": "Subject 1 Label", "default": "Subject 1:" },
-        { "id": "sub2Label", "label": "Subject 2 Label", "default": "Subject 2:" },
-        { "id": "sub3Label", "label": "Subject 3 Label", "default": "Subject 3:" },
-        { "id": "buttonText", "label": "Button Text", "default": "Calculate Result" }
+        {
+          "id": "title",
+          "label": "Title",
+          "default": "Marks Calculator"
+        },
+        {
+          "id": "sub1Label",
+          "label": "Subject 1 Label",
+          "default": "Subject 1:"
+        },
+        {
+          "id": "sub2Label",
+          "label": "Subject 2 Label",
+          "default": "Subject 2:"
+        },
+        {
+          "id": "sub3Label",
+          "label": "Subject 3 Label",
+          "default": "Subject 3:"
+        },
+        {
+          "id": "buttonText",
+          "label": "Button Text",
+          "default": "Calculate Result"
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{title}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>\n            <h2>{{title}}</h2>\n            {{sub1Label}} <asp:TextBox ID=\"TextBox1\" runat=\"server\"></asp:TextBox>\n            <br /><br />\n            {{sub2Label}} <asp:TextBox ID=\"TextBox2\" runat=\"server\"></asp:TextBox>\n            <br /><br />\n            {{sub3Label}} <asp:TextBox ID=\"TextBox3\" runat=\"server\"></asp:TextBox>\n            <br /><br />\n            <asp:Button ID=\"Button1\" runat=\"server\" Text=\"{{buttonText}}\" OnClick=\"Button1_Click\" />\n            <br /><br />\n            <asp:Label ID=\"ResultLabel\" runat=\"server\" Text=\"\"></asp:Label>\n        </div>\n    </form>\n</body>\n</html>",
@@ -116,11 +212,31 @@
       "name": "Feedback/Testimonial",
       "description": "Simple feedback form.",
       "fields": [
-        { "id": "title", "label": "Title", "default": "Feedback Form" },
-        { "id": "namePlaceholder", "label": "Name Placeholder", "default": "Enter your name" },
-        { "id": "emailPlaceholder", "label": "Email Placeholder", "default": "Enter your email" },
-        { "id": "feedbackPlaceholder", "label": "Feedback Placeholder", "default": "Your feedback" },
-        { "id": "buttonText", "label": "Button Text", "default": "Submit Feedback" }
+        {
+          "id": "title",
+          "label": "Title",
+          "default": "Feedback Form"
+        },
+        {
+          "id": "namePlaceholder",
+          "label": "Name Placeholder",
+          "default": "Enter your name"
+        },
+        {
+          "id": "emailPlaceholder",
+          "label": "Email Placeholder",
+          "default": "Enter your email"
+        },
+        {
+          "id": "feedbackPlaceholder",
+          "label": "Feedback Placeholder",
+          "default": "Your feedback"
+        },
+        {
+          "id": "buttonText",
+          "label": "Button Text",
+          "default": "Submit Feedback"
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{title}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>\n            <h2>{{title}}</h2>\n            <asp:TextBox ID=\"NameBox\" runat=\"server\" placeholder=\"{{namePlaceholder}}\"></asp:TextBox>\n            <br /><br />\n            <asp:TextBox ID=\"EmailBox\" runat=\"server\" placeholder=\"{{emailPlaceholder}}\"></asp:TextBox>\n            <br /><br />\n            <asp:TextBox ID=\"FeedbackBox\" runat=\"server\" TextMode=\"MultiLine\" placeholder=\"{{feedbackPlaceholder}}\"></asp:TextBox>\n            <br /><br />\n            <asp:Button ID=\"SubmitBtn\" runat=\"server\" Text=\"{{buttonText}}\" OnClick=\"SubmitBtn_Click\" />\n            <br /><br />\n            <asp:Label ID=\"MsgLabel\" runat=\"server\" Text=\"\"></asp:Label>\n        </div>\n    </form>\n</body>\n</html>",
@@ -133,15 +249,96 @@
       "name": "File Upload",
       "description": "Upload a file to the server.",
       "fields": [
-        { "id": "title", "label": "Title", "default": "File Upload" },
-        { "id": "buttonText", "label": "Button Text", "default": "Upload" },
-        { "id": "successMessage", "label": "Success Message", "default": "File uploaded successfully!" },
-        { "id": "errorMessage", "label": "Error Message", "default": "Please select a file to upload." }
+        {
+          "id": "title",
+          "label": "Title",
+          "default": "File Upload"
+        },
+        {
+          "id": "buttonText",
+          "label": "Button Text",
+          "default": "Upload"
+        },
+        {
+          "id": "successMessage",
+          "label": "Success Message",
+          "default": "File uploaded successfully!"
+        },
+        {
+          "id": "errorMessage",
+          "label": "Error Message",
+          "default": "Please select a file to upload."
+        }
       ],
       "files": {
         "Default.aspx": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"Project.Default\" %>\n<!DOCTYPE html>\n<html>\n<head><title>{{title}}</title></head>\n<body>\n    <form id=\"form1\" runat=\"server\">\n        <div>\n            <h2>{{title}}</h2>\n            <asp:FileUpload ID=\"FileUpload1\" runat=\"server\" />\n            <br /><br />\n            <asp:Button ID=\"UploadBtn\" runat=\"server\" Text=\"{{buttonText}}\" OnClick=\"UploadBtn_Click\" />\n            <br /><br />\n            <asp:Label ID=\"StatusLabel\" runat=\"server\" Text=\"\"></asp:Label>\n        </div>\n    </form>\n</body>\n</html>",
         "Default.aspx.cs": "using System;\nusing System.IO;\n\nnamespace Project\n{\n    public partial class Default : System.Web.UI.Page\n    {\n        protected void Page_Load(object sender, EventArgs e)\n        {\n        }\n\n        protected void UploadBtn_Click(object sender, EventArgs e)\n        {\n            if (FileUpload1.HasFile)\n            {\n                try\n                {\n                    string filename = Path.GetFileName(FileUpload1.FileName);\n                    FileUpload1.SaveAs(Server.MapPath(\"~/\") + filename);\n                    StatusLabel.Text = \"{{successMessage}}\";\n                }\n                catch (Exception ex)\n                {\n                    StatusLabel.Text = \"Upload status: The file could not be uploaded. The following error occurred: \" + ex.Message;\n                }\n            }\n            else\n            {\n                StatusLabel.Text = \"{{errorMessage}}\";\n            }\n        }\n    }\n}",
         "Web.config": "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<configuration>\n  <system.web>\n    <compilation debug=\"true\" targetFramework=\"4.7.2\" />\n    <httpRuntime targetFramework=\"4.7.2\" />\n  </system.web>\n</configuration>"
+      }
+    },
+    {
+      "id": "p10",
+      "name": "ASP.NET Core Web API (Swagger)",
+      "description": "A modern ASP.NET Core Web API project pre-configured with Swagger/OpenAPI.",
+      "fields": [
+        {
+          "id": "projectName",
+          "label": "Project Name",
+          "default": "MyWebApi"
+        },
+        {
+          "id": "port",
+          "label": "Port",
+          "default": "5000"
+        }
+      ],
+      "files": {
+        "{{projectName}}.csproj": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <PackageReference Include=\"Swashbuckle.AspNetCore\" Version=\"6.5.0\" />\n  </ItemGroup>\n</Project>",
+        "Program.cs": "var builder = WebApplication.CreateBuilder(args);\n\nbuilder.Services.AddEndpointsApiExplorer();\nbuilder.Services.AddSwaggerGen();\n\nvar app = builder.Build();\n\nif (app.Environment.IsDevelopment())\n{\n    app.UseSwagger();\n    app.UseSwaggerUI();\n}\n\napp.MapGet(\"/\", () => \"Hello Web API!\");\n\napp.Run(\"http://localhost:{{port}}\");",
+        "appsettings.json": "{\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"AllowedHosts\": \"*\"\n}"
+      }
+    },
+    {
+      "id": "p11",
+      "name": "ASP.NET Core MVC (CRUD Boilerplate)",
+      "description": "ASP.NET Core MVC boilerplate with views, controllers, and models.",
+      "fields": [
+        {
+          "id": "projectName",
+          "label": "Project Name",
+          "default": "MyMvcApp"
+        }
+      ],
+      "files": {
+        "{{projectName}}.csproj": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n</Project>",
+        "Program.cs": "var builder = WebApplication.CreateBuilder(args);\n\nbuilder.Services.AddControllersWithViews();\n\nvar app = builder.Build();\n\napp.UseStaticFiles();\napp.UseRouting();\n\napp.MapControllerRoute(\n    name: \"default\",\n    pattern: \"{controller=Home}/{action=Index}/{id?}\");\n\napp.Run();",
+        "Controllers/HomeController.cs": "using Microsoft.AspNetCore.Mvc;\n\nnamespace {{projectName}}.Controllers;\n\npublic class HomeController : Controller\n{\n    public IActionResult Index()\n    {\n        return View();\n    }\n}",
+        "Views/Home/Index.cshtml": "@{ ViewData[\"Title\"] = \"Home Page\"; }\n\n<div class=\"text-center\">\n    <h1 class=\"display-4\">Welcome</h1>\n    <p>Learn about <a href=\"https://docs.microsoft.com/aspnet/core\">building Web apps with ASP.NET Core</a>.</p>\n</div>",
+        "Views/_ViewImports.cshtml": "@using {{projectName}}\n@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers",
+        "Views/_ViewStart.cshtml": "@{ Layout = \"_Layout\"; }",
+        "Views/Shared/_Layout.cshtml": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"utf-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>@ViewData[\"Title\"] - {{projectName}}</title>\n</head>\n<body>\n    <header>\n        <h1>{{projectName}}</h1>\n    </header>\n    <main role=\"main\">\n        @RenderBody()\n    </main>\n</body>\n</html>"
+      }
+    },
+    {
+      "id": "p12",
+      "name": "Clean Architecture Skeleton",
+      "description": "A multi-layered Clean Architecture template (Domain, Application, Infrastructure, Presentation).",
+      "fields": [
+        {
+          "id": "projectName",
+          "label": "Project Name",
+          "default": "CleanArchApp"
+        }
+      ],
+      "files": {
+        "{{projectName}}.Domain/{{projectName}}.Domain.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n</Project>",
+        "{{projectName}}.Domain/Entities/SampleEntity.cs": "namespace {{projectName}}.Domain.Entities;\n\npublic class SampleEntity\n{\n    public int Id { get; set; }\n    public string Name { get; set; } = string.Empty;\n}",
+        "{{projectName}}.Application/{{projectName}}.Application.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n  <ItemGroup>\n    <ProjectReference Include=\"..\\{{projectName}}.Domain\\{{projectName}}.Domain.csproj\" />\n  </ItemGroup>\n</Project>",
+        "{{projectName}}.Application/Interfaces/ISampleRepository.cs": "using {{projectName}}.Domain.Entities;\n\nnamespace {{projectName}}.Application.Interfaces;\n\npublic interface ISampleRepository\n{\n    Task<IEnumerable<SampleEntity>> GetAllAsync();\n}",
+        "{{projectName}}.Infrastructure/{{projectName}}.Infrastructure.csproj": "<Project Sdk=\"Microsoft.NET.Sdk\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n  <ItemGroup>\n    <ProjectReference Include=\"..\\{{projectName}}.Application\\{{projectName}}.Application.csproj\" />\n  </ItemGroup>\n</Project>",
+        "{{projectName}}.Infrastructure/Repositories/SampleRepository.cs": "using {{projectName}}.Application.Interfaces;\nusing {{projectName}}.Domain.Entities;\n\nnamespace {{projectName}}.Infrastructure.Repositories;\n\npublic class SampleRepository : ISampleRepository\n{\n    public async Task<IEnumerable<SampleEntity>> GetAllAsync()\n    {\n        return await Task.FromResult(new List<SampleEntity>\n        {\n            new SampleEntity { Id = 1, Name = \"Sample 1\" },\n            new SampleEntity { Id = 2, Name = \"Sample 2\" }\n        });\n    }\n}",
+        "{{projectName}}.API/{{projectName}}.API.csproj": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <Nullable>enable</Nullable>\n    <ImplicitUsings>enable</ImplicitUsings>\n  </PropertyGroup>\n  <ItemGroup>\n    <ProjectReference Include=\"..\\{{projectName}}.Infrastructure\\{{projectName}}.Infrastructure.csproj\" />\n  </ItemGroup>\n</Project>",
+        "{{projectName}}.API/Program.cs": "using {{projectName}}.Application.Interfaces;\nusing {{projectName}}.Infrastructure.Repositories;\n\nvar builder = WebApplication.CreateBuilder(args);\n\nbuilder.Services.AddScoped<ISampleRepository, SampleRepository>();\n\nvar app = builder.Build();\n\napp.MapGet(\"/api/samples\", async (ISampleRepository repo) =>\n{\n    return await repo.GetAllAsync();\n});\n\napp.Run();"
       }
     }
   ]

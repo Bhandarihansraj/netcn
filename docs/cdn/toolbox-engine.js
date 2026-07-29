@@ -256,7 +256,7 @@
         var CANVAS_KEY = 'netcn_canvas_' + toolId;
         var board = el('div', 'netcn-controls-board');
 
-        // Sidebar — draggable control list (like VS Toolbox)
+        // Sidebar — draggable control list
         var sidebar = el('div', 'netcn-controls-sidebar');
         var sideTitle = el('h4', 'netcn-sidebar-title');
         sideTitle.textContent = '⚙ Toolbox';
@@ -271,32 +271,51 @@
             item.setAttribute('data-ctrl-id', ctrl.id);
             item.innerHTML = '<span class="netcn-ctrl-icon">' + ctrl.icon + '</span> ' + esc(ctrl.name);
             item.addEventListener('dragstart', function (e) {
-                e.dataTransfer.setData('text/plain', JSON.stringify(ctrl));
+                var clone = JSON.parse(JSON.stringify(ctrl));
+                clone.instanceId = ctrl.id + '_' + Date.now() + Math.floor(Math.random() * 1000);
+                e.dataTransfer.setData('text/plain', JSON.stringify(clone));
                 item.classList.add('dragging');
             });
             item.addEventListener('dragend', function () { item.classList.remove('dragging'); });
             sidebar.appendChild(item);
         });
 
-        // Canvas — drop target (like VS Designer surface)
+        // Canvas — absolute positioned drop target
         var canvasWrap = el('div', 'netcn-controls-preview');
+        canvasWrap.style.display = 'flex';
+        canvasWrap.style.flexDirection = 'column';
+        
         var canvasHeader = el('div', 'netcn-canvas-header');
         canvasHeader.innerHTML = '<h4>🖥️ Designer Canvas</h4>';
+        
+        var headerActions = el('div');
+        headerActions.style.display = 'flex';
+        headerActions.style.gap = '10px';
+        
         var clearBtn = el('button', 'netcn-btn netcn-btn-reset');
-        clearBtn.textContent = '🗑️ Clear Canvas';
+        clearBtn.textContent = '🗑️ Clear';
         clearBtn.addEventListener('click', function () {
             canvasBody.innerHTML = '';
             localStorage.removeItem(CANVAS_KEY);
             updateCanvasCount(canvasBody, countBadge);
         });
-        canvasHeader.appendChild(clearBtn);
-        canvasWrap.appendChild(canvasHeader);
+        
+        var genBtn = el('button', 'netcn-btn netcn-btn-add');
+        genBtn.textContent = '⚡ Generate Project';
+        genBtn.addEventListener('click', function () {
+            generateProjectFromCanvas(canvasBody);
+        });
+        
+        headerActions.appendChild(clearBtn);
+        headerActions.appendChild(genBtn);
+        canvasHeader.appendChild(headerActions);
 
         var countBadge = el('span', 'netcn-canvas-count');
         countBadge.textContent = '0 controls';
         canvasHeader.appendChild(countBadge);
+        canvasWrap.appendChild(canvasHeader);
 
-        var canvasBody = el('div', 'netcn-canvas-body');
+        var canvasBody = el('div', 'netcn-canvas-body netcn-canvas-absolute');
         canvasBody.addEventListener('dragover', function (e) {
             e.preventDefault();
             canvasBody.classList.add('drag-over');
@@ -310,9 +329,26 @@
             try {
                 var ctrl = JSON.parse(e.dataTransfer.getData('text/plain'));
                 if (ctrl && ctrl.id) {
-                    addControlToCanvas(canvasBody, ctrl, CANVAS_KEY, countBadge);
+                    var rect = canvasBody.getBoundingClientRect();
+                    ctrl.x = e.clientX - rect.left - 20;
+                    ctrl.y = e.clientY - rect.top - 20;
+                    
+                    if (ctrl.isExisting) {
+                        var existing = canvasBody.querySelector('[data-instance-id="' + ctrl.instanceId + '"]');
+                        if (existing) existing.remove();
+                    } else {
+                        var count = canvasBody.querySelectorAll('.netcn-canvas-item-abs').length + 1;
+                        ctrl.props = {
+                            ID: ctrl.id.charAt(0).toUpperCase() + ctrl.id.slice(1) + count,
+                            Text: ctrl.name,
+                            Value: ''
+                        };
+                        ctrl.isExisting = true;
+                    }
+                    
+                    addControlToCanvasAbsolute(canvasBody, ctrl, CANVAS_KEY, countBadge);
                 }
-            } catch (ex) { /* ignore non-control drops */ }
+            } catch (ex) { console.error(ex); }
         });
 
         canvasWrap.appendChild(canvasBody);
@@ -325,311 +361,211 @@
             var saved = JSON.parse(localStorage.getItem(CANVAS_KEY));
             if (saved && saved.controls) {
                 saved.controls.forEach(function (ctrl) {
-                    addControlToCanvas(canvasBody, ctrl, CANVAS_KEY, countBadge);
+                    addControlToCanvasAbsolute(canvasBody, ctrl, CANVAS_KEY, countBadge);
                 });
             }
         } catch (ex) { /* ignore */ }
     }
 
-    function addControlToCanvas(canvasBody, ctrl, storageKey, countBadge) {
-        var wrapper = el('div', 'netcn-canvas-item');
+    function addControlToCanvasAbsolute(canvasBody, ctrl, storageKey, countBadge) {
+        var wrapper = el('div', 'netcn-canvas-item-abs');
         wrapper.setAttribute('data-ctrl-id', ctrl.id);
+        wrapper.setAttribute('data-instance-id', ctrl.instanceId);
+        wrapper.style.position = 'absolute';
+        wrapper.style.left = Math.max(0, ctrl.x) + 'px';
+        wrapper.style.top = Math.max(0, ctrl.y) + 'px';
+        wrapper.draggable = true;
+        
+        wrapper.dataset.props = JSON.stringify(ctrl.props || {});
+        
+        wrapper.addEventListener('dragstart', function(e) {
+            e.stopPropagation();
+            var clone = JSON.parse(JSON.stringify(ctrl));
+            clone.props = JSON.parse(wrapper.dataset.props);
+            e.dataTransfer.setData('text/plain', JSON.stringify(clone));
+            wrapper.classList.add('dragging');
+        });
+        wrapper.addEventListener('dragend', function() { wrapper.classList.remove('dragging'); });
 
-        var header = el('div', 'netcn-canvas-item-header');
-        var label = el('span');
-        label.textContent = ctrl.icon + ' ' + ctrl.name;
-        
-        var actions = el('span');
-        
-        var upBtn = el('button', 'netcn-canvas-btn');
-        upBtn.innerHTML = '▲';
-        upBtn.title = 'Move Up';
-        upBtn.addEventListener('click', function () {
-            var prev = wrapper.previousElementSibling;
-            if (prev) {
-                canvasBody.insertBefore(wrapper, prev);
-                saveCanvasState(canvasBody, storageKey);
-            }
+        var content = el('div', 'netcn-abs-content');
+        var props = JSON.parse(wrapper.dataset.props);
+        content.textContent = (ctrl.icon || '📦') + ' ' + (props.Text || props.ID || ctrl.name);
+        wrapper.appendChild(content);
+
+        wrapper.addEventListener('click', function(e) {
+            e.stopPropagation();
+            showPropertyEditor(wrapper, ctrl, canvasBody, storageKey);
         });
         
-        var downBtn = el('button', 'netcn-canvas-btn');
-        downBtn.innerHTML = '▼';
-        downBtn.title = 'Move Down';
-        downBtn.addEventListener('click', function () {
-            var next = wrapper.nextElementSibling;
-            if (next) {
-                canvasBody.insertBefore(next, wrapper);
-                saveCanvasState(canvasBody, storageKey);
-            }
-        });
-
-        var delBtn = el('button', 'netcn-canvas-del');
+        var delBtn = el('button', 'netcn-abs-del');
         delBtn.textContent = '✕';
         delBtn.title = 'Remove';
-        delBtn.addEventListener('click', function () {
+        delBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
             wrapper.remove();
-            saveCanvasState(canvasBody, storageKey);
-            updateCanvasCount(canvasBody, countBadge);
+            saveCanvasStateAbsolute(canvasBody, storageKey);
+            if (countBadge) updateCanvasCount(canvasBody, countBadge);
         });
-        
-        actions.appendChild(upBtn);
-        actions.appendChild(downBtn);
-        actions.appendChild(delBtn);
-
-        header.appendChild(label);
-        header.appendChild(actions);
-        wrapper.appendChild(header);
-
-        var body = el('div', 'netcn-canvas-item-body');
-        renderLiveControl(body, ctrl);
-        wrapper.appendChild(body);
+        wrapper.appendChild(delBtn);
 
         canvasBody.appendChild(wrapper);
-        saveCanvasState(canvasBody, storageKey);
-        updateCanvasCount(canvasBody, countBadge);
+        saveCanvasStateAbsolute(canvasBody, storageKey);
+        if (countBadge) updateCanvasCount(canvasBody, countBadge);
     }
 
-    function renderLiveControl(body, ctrl) {
-        var p = ctrl.properties;
-        switch (ctrl.id) {
-            case 'btn': var b = el('button', 'netcn-demo-btn btn-primary'); b.textContent = p.text; b.addEventListener('click', function(){ b.textContent = '✔ Clicked!'; setTimeout(function(){ b.textContent = p.text; }, 800); }); body.appendChild(b); break;
-            case 'lbl': var l = el('span', 'netcn-demo-label-ctrl'); l.textContent = p.text; body.appendChild(l); break;
-            case 'txt': var i = el('input', 'netcn-demo-input'); i.type = 'text'; i.placeholder = p.placeholder; body.appendChild(i); break;
-            case 'chk': var cw = el('label', 'netcn-demo-check'); var ci = document.createElement('input'); ci.type = 'checkbox'; cw.appendChild(ci); cw.appendChild(document.createTextNode(' ' + p.text)); body.appendChild(cw); break;
-            case 'chklist': p.items.forEach(function(item){ var w = el('label', 'netcn-demo-check'); var c = document.createElement('input'); c.type = 'checkbox'; w.appendChild(c); w.appendChild(document.createTextNode(' ' + item)); body.appendChild(w); body.appendChild(document.createElement('br')); }); break;
-            case 'rad': var rw = el('label', 'netcn-demo-check'); var ri = document.createElement('input'); ri.type = 'radio'; ri.name = 'canvas_radio'; rw.appendChild(ri); rw.appendChild(document.createTextNode(' ' + p.text)); body.appendChild(rw); break;
-            case 'radlist': p.items.forEach(function(item, idx){ var w = el('label', 'netcn-demo-check'); var r = document.createElement('input'); r.type = 'radio'; r.name = 'canvas_radlist_' + ctrl.id + '_' + Math.random(); r.checked = idx === p.selectedIndex; w.appendChild(r); w.appendChild(document.createTextNode(' ' + item)); body.appendChild(w); body.appendChild(document.createElement('br')); }); break;
-            case 'ddl': var s = el('select', 'netcn-demo-input'); p.items.forEach(function(item){ var o = document.createElement('option'); o.textContent = item; s.appendChild(o); }); body.appendChild(s); break;
-            case 'lst': var ls = el('select', 'netcn-demo-input'); ls.multiple = true; ls.size = p.rows || 4; p.items.forEach(function(item){ var o = document.createElement('option'); o.textContent = item; ls.appendChild(o); }); body.appendChild(ls); break;
-            case 'lnk': var a = el('a', 'netcn-demo-link'); a.href = p.url; a.target = '_blank'; a.textContent = p.text; body.appendChild(a); break;
-            case 'img': var im = el('img', 'netcn-demo-img'); im.src = p.src; im.alt = p.alt; im.style.width = p.width || '100%'; body.appendChild(im); break;
-            case 'fu': var fz = el('div', 'netcn-demo-upload'); fz.innerHTML = '<p>📁 Drag files here or click</p>'; body.appendChild(fz); break;
-            case 'cal': var ci2 = el('input', 'netcn-demo-input'); ci2.type = 'date'; body.appendChild(ci2); break;
-            case 'pnl': var pn = el('div', 'netcn-demo-panel'); var ph = el('div', 'netcn-panel-header'); ph.textContent = p.headerText; var pb = el('div', 'netcn-panel-body'); pb.textContent = p.content; ph.addEventListener('click', function(){ pb.style.display = pb.style.display === 'none' ? 'block' : 'none'; }); pn.appendChild(ph); pn.appendChild(pb); body.appendChild(pn); break;
-            case 'bl': var ul = el('ul', 'netcn-demo-list'); p.items.forEach(function(item){ var li = document.createElement('li'); li.textContent = item; ul.appendChild(li); }); body.appendChild(ul); break;
-            default: body.textContent = ctrl.name + ' control';
-        }
+    function showPropertyEditor(wrapper, ctrl, canvasBody, storageKey) {
+        var existing = document.querySelector('.netcn-modal-overlay');
+        if (existing) existing.remove();
+
+        var overlay = el('div', 'netcn-modal-overlay');
+        var modal = el('div', 'netcn-modal');
+        var h3 = document.createElement('h3');
+        h3.textContent = '⚙️ Edit ' + (ctrl.name || 'Control');
+        modal.appendChild(h3);
+        
+        var props = JSON.parse(wrapper.dataset.props || '{}');
+        var form = el('div');
+        ['ID', 'Text', 'Value'].forEach(function(key) {
+            var lbl = el('label'); lbl.textContent = key;
+            var inp = el('input', 'netcn-input');
+            inp.type = 'text';
+            inp.id = 'prop_' + key;
+            inp.value = props[key] || '';
+            form.appendChild(lbl);
+            form.appendChild(inp);
+        });
+        modal.appendChild(form);
+
+        var actions = el('div', 'netcn-modal-actions');
+        var saveBtn = el('button', 'netcn-btn netcn-btn-add');
+        saveBtn.textContent = 'Save';
+        var cancelBtn = el('button', 'netcn-btn netcn-btn-reset');
+        cancelBtn.textContent = 'Cancel';
+        actions.appendChild(saveBtn);
+        actions.appendChild(cancelBtn);
+        modal.appendChild(actions);
+
+        overlay.appendChild(modal);
+        document.body.appendChild(overlay);
+
+        cancelBtn.addEventListener('click', function() { overlay.remove(); });
+        overlay.addEventListener('click', function(e) { if(e.target === overlay) overlay.remove(); });
+        saveBtn.addEventListener('click', function() {
+            props.ID = modal.querySelector('#prop_ID').value.replace(/[^a-zA-Z0-9_]/g, '');
+            props.Text = modal.querySelector('#prop_Text').value;
+            props.Value = modal.querySelector('#prop_Value').value;
+            wrapper.dataset.props = JSON.stringify(props);
+            
+            var content = wrapper.querySelector('.netcn-abs-content');
+            if (content) content.textContent = (ctrl.icon || '📦') + ' ' + (props.Text || props.ID);
+            
+            saveCanvasStateAbsolute(canvasBody, storageKey);
+            overlay.remove();
+        });
     }
 
-    function saveCanvasState(canvasBody, storageKey) {
-        var items = canvasBody.querySelectorAll('.netcn-canvas-item');
+    function saveCanvasStateAbsolute(canvasBody, storageKey) {
+        var items = canvasBody.querySelectorAll('.netcn-canvas-item-abs');
         var controls = [];
-        // We save control IDs only — actual rendering is re-done from the config
-        // This prevents any stored malicious content from being persisted
-        items.forEach(function (item) {
-            controls.push({ id: item.getAttribute('data-ctrl-id') });
+        items.forEach(function(item) {
+            controls.push({
+                id: item.getAttribute('data-ctrl-id'),
+                instanceId: item.getAttribute('data-instance-id'),
+                x: parseInt(item.style.left) || 0,
+                y: parseInt(item.style.top) || 0,
+                isExisting: true,
+                icon: item.querySelector('.netcn-abs-content').textContent.split(' ')[0],
+                name: item.getAttribute('data-ctrl-id'),
+                props: JSON.parse(item.dataset.props || '{}')
+            });
         });
         localStorage.setItem(storageKey, JSON.stringify({ controls: controls }));
     }
 
     function updateCanvasCount(canvasBody, badge) {
-        var c = canvasBody.querySelectorAll('.netcn-canvas-item').length;
+        var c = canvasBody.querySelectorAll('.netcn-canvas-item-abs').length;
         badge.textContent = c + ' control' + (c !== 1 ? 's' : '');
     }
 
-    function renderControlPreview(previewBody, ctrl) {
-        previewBody.innerHTML = '';
-        var p = ctrl.properties;
-
-        // Control info header
-        var info = el('div', 'netcn-ctrl-info');
-        info.innerHTML = '<h3>' + ctrl.icon + ' ' + esc(ctrl.name) + '</h3><p>' + esc(ctrl.description) + '</p><span class="netcn-ctrl-cat">' + esc(ctrl.category) + '</span>';
-        previewBody.appendChild(info);
-
-        // Live demo area
-        var demo = el('div', 'netcn-ctrl-demo');
-        var demoLabel = el('div', 'netcn-demo-label');
-        demoLabel.textContent = 'Live Demo';
-        demo.appendChild(demoLabel);
-
-        var demoArea = el('div', 'netcn-demo-area');
-
-        switch (ctrl.id) {
-            case 'btn':
-                var btn = el('button', 'netcn-demo-btn ' + (p.cssClass === 'primary' ? 'btn-primary' : 'btn-secondary'));
-                btn.textContent = p.text;
-                btn.disabled = !p.enabled;
-                btn.addEventListener('click', function () { btn.textContent = '✔ Clicked!'; setTimeout(function(){ btn.textContent = p.text; }, 1000); });
-                demoArea.appendChild(btn);
-                break;
-
-            case 'lbl':
-                var lbl = el('span', 'netcn-demo-label-ctrl');
-                lbl.textContent = p.text;
-                if (p.bold) lbl.style.fontWeight = 'bold';
-                if (p.italic) lbl.style.fontStyle = 'italic';
-                demoArea.appendChild(lbl);
-                break;
-
-            case 'txt':
-                if (p.mode === 'multi') {
-                    var ta = el('textarea', 'netcn-demo-input');
-                    ta.placeholder = p.placeholder;
-                    ta.rows = 4;
-                    demoArea.appendChild(ta);
-                } else {
-                    var inp = el('input', 'netcn-demo-input');
-                    inp.type = p.mode === 'password' ? 'password' : 'text';
-                    inp.placeholder = p.placeholder;
-                    inp.maxLength = p.maxLength || 100;
-                    demoArea.appendChild(inp);
-                }
-                break;
-
-            case 'chk':
-                var chkWrap = el('label', 'netcn-demo-check');
-                var chkInput = document.createElement('input');
-                chkInput.type = 'checkbox';
-                chkInput.checked = p.checked;
-                chkWrap.appendChild(chkInput);
-                chkWrap.appendChild(document.createTextNode(' ' + p.text));
-                demoArea.appendChild(chkWrap);
-                break;
-
-            case 'chklist':
-                p.items.forEach(function (item) {
-                    var wrap = el('label', 'netcn-demo-check');
-                    var cb = document.createElement('input');
-                    cb.type = 'checkbox';
-                    wrap.appendChild(cb);
-                    wrap.appendChild(document.createTextNode(' ' + item));
-                    demoArea.appendChild(wrap);
-                    if (p.layout === 'vertical') demoArea.appendChild(document.createElement('br'));
-                });
-                break;
-
-            case 'rad':
-                var radWrap = el('label', 'netcn-demo-check');
-                var radInput = document.createElement('input');
-                radInput.type = 'radio';
-                radInput.name = p.groupName;
-                radInput.checked = p.checked;
-                radWrap.appendChild(radInput);
-                radWrap.appendChild(document.createTextNode(' ' + p.text));
-                demoArea.appendChild(radWrap);
-                break;
-
-            case 'radlist':
-                p.items.forEach(function (item, idx) {
-                    var wrap = el('label', 'netcn-demo-check');
-                    var rb = document.createElement('input');
-                    rb.type = 'radio';
-                    rb.name = 'netcn_radlist_' + ctrl.id;
-                    rb.checked = (idx === p.selectedIndex);
-                    wrap.appendChild(rb);
-                    wrap.appendChild(document.createTextNode(' ' + item));
-                    demoArea.appendChild(wrap);
-                    if (p.layout === 'vertical') demoArea.appendChild(document.createElement('br'));
-                });
-                break;
-
-            case 'ddl':
-                var sel = el('select', 'netcn-demo-input');
-                p.items.forEach(function (item, idx) {
-                    var opt = document.createElement('option');
-                    opt.textContent = item;
-                    opt.selected = (idx === p.selectedIndex);
-                    sel.appendChild(opt);
-                });
-                demoArea.appendChild(sel);
-                break;
-
-            case 'lst':
-                var lst = el('select', 'netcn-demo-input');
-                lst.multiple = p.multiple;
-                lst.size = p.rows || 4;
-                p.items.forEach(function (item) {
-                    var opt = document.createElement('option');
-                    opt.textContent = item;
-                    lst.appendChild(opt);
-                });
-                demoArea.appendChild(lst);
-                break;
-
-            case 'lnk':
-                var link = el('a', 'netcn-demo-link');
-                link.href = p.url;
-                link.target = p.target || '_blank';
-                link.textContent = p.text;
-                demoArea.appendChild(link);
-                break;
-
-            case 'img':
-                var imgEl = el('img', 'netcn-demo-img');
-                imgEl.src = p.src;
-                imgEl.alt = p.alt;
-                imgEl.style.width = p.width || '100%';
-                demoArea.appendChild(imgEl);
-                break;
-
-            case 'fu':
-                var fuZone = el('div', 'netcn-demo-upload');
-                fuZone.innerHTML = '<p>📁 Drag files here or click to browse</p>';
-                var fuInput = document.createElement('input');
-                fuInput.type = 'file';
-                fuInput.accept = p.accept;
-                fuInput.multiple = p.multiple;
-                fuInput.style.display = 'none';
-                fuZone.addEventListener('click', function () { fuInput.click(); });
-                fuZone.addEventListener('dragover', function (e) { e.preventDefault(); fuZone.classList.add('active'); });
-                fuZone.addEventListener('dragleave', function () { fuZone.classList.remove('active'); });
-                fuZone.addEventListener('drop', function (e) {
-                    e.preventDefault();
-                    fuZone.classList.remove('active');
-                    fuZone.innerHTML = '<p>✔ ' + e.dataTransfer.files.length + ' file(s) selected</p>';
-                });
-                fuInput.addEventListener('change', function () {
-                    fuZone.innerHTML = '<p>✔ ' + fuInput.files.length + ' file(s) selected</p>';
-                });
-                demoArea.appendChild(fuZone);
-                demoArea.appendChild(fuInput);
-                break;
-
-            case 'cal':
-                var calInput = el('input', 'netcn-demo-input');
-                calInput.type = 'date';
-                calInput.value = p.selectedDate || '';
-                var calDisplay = el('div', 'netcn-cal-display');
-                calDisplay.textContent = 'Select a date above';
-                calInput.addEventListener('change', function () {
-                    var d = new Date(calInput.value);
-                    calDisplay.textContent = '📅 ' + d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-                });
-                demoArea.appendChild(calInput);
-                demoArea.appendChild(calDisplay);
-                break;
-
-            case 'pnl':
-                var panel = el('div', 'netcn-demo-panel');
-                var panelHeader = el('div', 'netcn-panel-header');
-                panelHeader.textContent = p.headerText;
-                var panelBody = el('div', 'netcn-panel-body');
-                panelBody.textContent = p.content;
-                if (p.collapsed) panelBody.style.display = 'none';
-                panelHeader.addEventListener('click', function () {
-                    panelBody.style.display = panelBody.style.display === 'none' ? 'block' : 'none';
-                });
-                panel.appendChild(panelHeader);
-                panel.appendChild(panelBody);
-                demoArea.appendChild(panel);
-                break;
-
-            case 'bl':
-                var ul = el(p.style === 'decimal' ? 'ol' : 'ul', 'netcn-demo-list');
-                p.items.forEach(function (item) {
-                    var li = document.createElement('li');
-                    li.textContent = item;
-                    ul.appendChild(li);
-                });
-                demoArea.appendChild(ul);
-                break;
-
-            default:
-                demoArea.innerHTML = '<p>Preview not available.</p>';
+    function generateProjectFromCanvas(canvasBody) {
+        if (typeof JSZip === 'undefined') {
+            alert('JSZip library not loaded yet. Please wait a moment.');
+            return;
         }
 
-        demo.appendChild(demoArea);
-        previewBody.appendChild(demo);
+        var items = canvasBody.querySelectorAll('.netcn-canvas-item-abs');
+        var aspxControls = '';
+        var csCode = '';
+
+        items.forEach(function(item) {
+            var ctrlId = item.getAttribute('data-ctrl-id');
+            var props = JSON.parse(item.dataset.props || '{}');
+            var x = parseInt(item.style.left) || 0;
+            var y = parseInt(item.style.top) || 0;
+            
+            var style = 'position:absolute; left:' + x + 'px; top:' + y + 'px;';
+            var tag = 'asp:Label';
+            var extra = 'Text="' + esc(props.Text) + '"';
+            
+            if (ctrlId === 'btn') {
+                tag = 'asp:Button';
+                extra = 'Text="' + esc(props.Text) + '" OnClick="' + esc(props.ID) + '_Click"';
+                csCode += '        protected void ' + esc(props.ID) + '_Click(object sender, EventArgs e) {\n            // Handle click\n        }\n\n';
+            } else if (ctrlId === 'txt') {
+                tag = 'asp:TextBox';
+                extra = 'Text="' + esc(props.Text) + '"';
+            } else if (ctrlId === 'chk') {
+                tag = 'asp:CheckBox';
+                extra = 'Text="' + esc(props.Text) + '"';
+            } else if (ctrlId === 'ddl') {
+                tag = 'asp:DropDownList';
+                extra = '';
+            } else if (ctrlId === 'lbl') {
+                tag = 'asp:Label';
+                extra = 'Text="' + esc(props.Text) + '"';
+            }
+            
+            aspxControls += '            <' + tag + ' ID="' + esc(props.ID) + '" runat="server" style="' + style + '" ' + extra + ' />\n';
+        });
+
+        var aspxContent = '<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="WebFormsApp.Default" %>\n' +
+'<!DOCTYPE html>\n' +
+'<html>\n' +
+'<head>\n' +
+'    <title>Generated Designer</title>\n' +
+'</head>\n' +
+'<body>\n' +
+'    <form id="form1" runat="server">\n' +
+'        <div style="position:relative; width:100%; height:800px; background:#f4f4f4;">\n' +
+aspxControls +
+'        </div>\n' +
+'    </form>\n' +
+'</body>\n' +
+'</html>';
+
+        var csContent = 'using System;\n\n' +
+'namespace WebFormsApp {\n' +
+'    public partial class Default : System.Web.UI.Page {\n' +
+'        protected void Page_Load(object sender, EventArgs e) {\n' +
+'            \n' +
+'        }\n\n' +
+csCode +
+'    }\n' +
+'}';
+
+        var zip = new JSZip();
+        var folder = zip.folder("WebFormsProject");
+        folder.file("Default.aspx", aspxContent);
+        folder.file("Default.aspx.cs", csContent);
+
+        zip.generateAsync({type:"blob"}).then(function(content) {
+            var link = document.createElement('a');
+            link.href = URL.createObjectURL(content);
+            link.download = 'WebFormsProject.zip';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
     }
 
     /* ================================================================
