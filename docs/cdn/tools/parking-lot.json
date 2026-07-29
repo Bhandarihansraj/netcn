@@ -1,0 +1,19 @@
+{
+  "title": "Parking Lot",
+  "description": "Manage your ideas — add new cards, drag them across zones, edit or remove them.",
+  "type": "parking-lot",
+  "columns": [
+    { "id": "backlog", "title": "Backlog" },
+    { "id": "in-progress", "title": "In Progress" },
+    { "id": "review", "title": "Review" },
+    { "id": "done", "title": "Done" }
+  ],
+  "initialCards": [
+    { "id": "car-1", "title": "Design new dashboard", "col": "backlog", "color": "red" },
+    { "id": "car-2", "title": "Fix login bug", "col": "in-progress", "color": "blue" },
+    { "id": "car-3", "title": "Update CDN schema", "col": "done", "color": "green" },
+    { "id": "car-4", "title": "Add dark mode support", "col": "backlog", "color": "purple" },
+    { "id": "car-5", "title": "Write API documentation", "col": "review", "color": "orange" },
+    { "id": "car-6", "title": "Setup CI/CD pipeline", "col": "backlog", "color": "teal" }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "title": "ASP.NET Practicals (1 to 9)",
+  "description": "Interactive demos of all 9 ASP.NET practicals — run them live in your browser.",
+  "type": "aspnet-practicals",
+  "practicals": [
+    {
+      "id": "p1",
+      "number": 1,
+      "title": "Hello World",
+      "description": "Create a first ASP.NET Website and display Hello World.",
+      "controls": [
+        "div"
+      ],
+      "csharpCode": "// No C# needed - pure HTML",
+      "aspxCode": "<div>Hello World</div>",
+      "output": "Hello World"
+    },
+    {
+      "id": "p2",
+      "number": 2,
+      "title": "Page Load Event",
+      "description": "Write an ASP.NET program to display 'Hello World' on page load event.",
+      "controls": [
+        "Response"
+      ],
+      "csharpCode": "protected void Page_Load(object sender, EventArgs e)\n{\n    Response.Write(\"Hello World\");\n}",
+      "aspxCode": "<%@ Page Language=\"C#\" AutoEventWireup=\"true\" CodeBehind=\"Default.aspx.cs\" Inherits=\"WebApplication.Default\" %>",
+      "output": "Hello World"
+    },
+    {
+      "id": "p3",
+      "number": 3,
+      "title": "Label Control",
+      "description": "Write an ASP.NET program to display a text in Label control on form load event.",
+      "controls": [
+        "Label"
+      ],
+      "csharpCode": "protected void Page_Load(object sender, EventArgs e)\n{\n    lblMessage.Text = \"Hello from Label Control!\";\n}",
+      "aspxCode": "<asp:Label ID=\"lblMessage\" runat=\"server\"></asp:Label>",
+      "output": "Hello from Label Control!"
+    },
+    {
+      "id": "p4",
+      "number": 4,
+      "title": "Button Click",
+      "description": "Write an ASP.NET program to display a text in Label control on Button click event.",
+      "controls": [
+        "Label",
+        "Button"
+      ],
+      "csharpCode": "protected void btnClick_Click(object sender, EventArgs e)\n{\n    lblMessage.Text = \"Button was clicked!\";\n}",
+      "aspxCode": "<asp:Button ID=\"btnClick\" runat=\"server\" Text=\"Click Me\" OnClick=\"btnClick_Click\" />\n<asp:Label ID=\"lblMessage\" runat=\"server\"></asp:Label>",
+      "output": "Button was clicked!"
+    },
+    {
+      "id": "p5",
+      "number": 5,
+      "title": "String Concatenation",
+      "description": "Write an ASP.NET program to take two string values from user, concatenate them and display.",
+      "controls": [
+        "TextBox",
+        "Button",
+        "Label"
+      ],
+      "csharpCode": "protected void btnConcat_Click(object sender, EventArgs e)\n{\n    lblResult.Text = txtString1.Text + \" \" + txtString2.Text;\n}",
+      "aspxCode": "<asp:TextBox ID=\"txtString1\" runat=\"server\"></asp:TextBox>\n<asp:TextBox ID=\"txtString2\" runat=\"server\"></asp:TextBox>\n<asp:Button ID=\"btnConcat\" runat=\"server\" Text=\"Concatenate\" OnClick=\"btnConcat_Click\" />\n<asp:Label ID=\"lblResult\" runat=\"server\"></asp:Label>",
+      "output": "String1 String2"
+    },
+    {
+      "id": "p6",
+      "number": 6,
+      "title": "Power Calculator (a^b)",
+      "description": "Write an ASP.NET program to calculate a^b.",
+      "controls": [
+        "TextBox",
+        "Button",
+        "Label"
+      ],
+      "csharpCode": "protected void btnCalculate_Click(object sender, EventArgs e)\n{\n    double a = Convert.ToDouble(txtA.Text);\n    double b = Convert.ToDouble(txtB.Text);\n    double result = Math.Pow(a, b);\n    lblResult.Text = \"Result: \" + result;\n}",
+      "aspxCode": "<asp:TextBox ID=\"txtA\" runat=\"server\"></asp:TextBox>\n<asp:TextBox ID=\"txtB\" runat=\"server\"></asp:TextBox>\n<asp:Button ID=\"btnCalculate\" runat=\"server\" Text=\"Calculate a^b\" OnClick=\"btnCalculate_Click\" />\n<asp:Label ID=\"lblResult\" runat=\"server\"></asp:Label>",
+      "output": "Result: [a^b]"
+    },
+    {
+      "id": "p7",
+      "number": 7,
+      "title": "Marks Calculator",
+      "description": "Write an ASP.NET program to calculate total marks and average of 3 subjects.",
+      "controls": [
+        "TextBox",
+        "Button",
+        "Label"
+      ],
+      "csharpCode": "protected void btnCalculate_Click(object sender, EventArgs e)\n{\n    int m1 = Convert.ToInt32(txtSubject1.Text);\n    int m2 = Convert.ToInt32(txtSubject2.Text);\n    int m3 = Convert.ToInt32(txtSubject3.Text);\n    int total = m1 + m2 + m3;\n    double avg = total / 3.0;\n    lblResult.Text = $\"Total: {total}, Average: {avg:F2}\";\n}",
+      "aspxCode": "<asp:TextBox ID=\"txtSubject1\" runat=\"server\"></asp:TextBox>\n<asp:TextBox ID=\"txtSubject2\" runat=\"server\"></asp:TextBox>\n<asp:TextBox ID=\"txtSubject3\" runat=\"server\"></asp:TextBox>\n<asp:Button ID=\"btnCalculate\" runat=\"server\" Text=\"Calculate\" OnClick=\"btnCalculate_Click\" />\n<asp:Label ID=\"lblResult\" runat=\"server\"></asp:Label>",
+      "output": "Total: [sum], Average: [avg]"
+    },
+    {
+      "id": "p8",
+      "number": 8,
+      "title": "Feedback/Testimonial",
+      "description": "Write an ASP.NET program to take user feedback (Name, Email, Message) and display it.",
+      "controls": [
+        "TextBox",
+        "Button",
+        "Label"
+      ],
+      "csharpCode": "protected void btnSubmit_Click(object sender, EventArgs e)\n{\n    lblOutput.Text = $\"Thank you {txtName.Text} ({txtEmail.Text}) for your feedback: {txtMessage.Text}\";\n}",
+      "aspxCode": "<asp:TextBox ID=\"txtName\" runat=\"server\"></asp:TextBox>\n<asp:TextBox ID=\"txtEmail\" runat=\"server\"></asp:TextBox>\n<asp:TextBox ID=\"txtMessage\" runat=\"server\" TextMode=\"MultiLine\"></asp:TextBox>\n<asp:Button ID=\"btnSubmit\" runat=\"server\" Text=\"Submit\" OnClick=\"btnSubmit_Click\" />\n<asp:Label ID=\"lblOutput\" runat=\"server\"></asp:Label>",
+      "output": "Thank you [Name] ([Email]) for your feedback: [Message]"
+    },
+    {
+      "id": "p9",
+      "number": 9,
+      "title": "File Upload",
+      "description": "Write an ASP.NET program to upload a file.",
+      "controls": [
+        "FileUpload",
+        "Button",
+        "Label"
+      ],
+      "csharpCode": "protected void btnUpload_Click(object sender, EventArgs e)\n{\n    if (fileUpload.HasFile)\n    {\n        string fileName = fileUpload.FileName;\n        fileUpload.SaveAs(Server.MapPath(\"~/Uploads/\" + fileName));\n        lblMessage.Text = \"File uploaded successfully: \" + fileName;\n    }\n    else\n    {\n        lblMessage.Text = \"Please select a file to upload.\";\n    }\n}",
+      "aspxCode": "<asp:FileUpload ID=\"fileUpload\" runat=\"server\" />\n<asp:Button ID=\"btnUpload\" runat=\"server\" Text=\"Upload\" OnClick=\"btnUpload_Click\" />\n<asp:Label ID=\"lblMessage\" runat=\"server\"></asp:Label>",
+      "output": "File uploaded successfully: [filename]"
+    }
+  ]
+}

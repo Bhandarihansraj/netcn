@@ -1,0 +1,188 @@
+{
+  "title": "Standard Controls",
+  "description": "Interactive .NET Standard Toolbox controls — click any control to see it live.",
+  "type": "standard-controls",
+  "controls": [
+    {
+      "id": "btn",
+      "name": "Button",
+      "icon": "🔘",
+      "category": "Input",
+      "description": "Clickable button that triggers an action.",
+      "properties": {
+        "text": "Click Me",
+        "cssClass": "primary",
+        "enabled": true,
+        "size": "md"
+      }
+    },
+    {
+      "id": "lbl",
+      "name": "Label",
+      "icon": "🏷️",
+      "category": "Display",
+      "description": "Displays static or dynamic text.",
+      "properties": {
+        "text": "Hello World",
+        "bold": false,
+        "italic": false,
+        "size": "md"
+      }
+    },
+    {
+      "id": "txt",
+      "name": "TextBox",
+      "icon": "📝",
+      "category": "Input",
+      "description": "Single-line, multi-line, or password text input.",
+      "properties": {
+        "placeholder": "Enter text...",
+        "mode": "single",
+        "maxLength": 100,
+        "enabled": true
+      }
+    },
+    {
+      "id": "chk",
+      "name": "CheckBox",
+      "icon": "☑️",
+      "category": "Input",
+      "description": "Toggle checkbox with label.",
+      "properties": {
+        "text": "I agree to the terms",
+        "checked": false,
+        "enabled": true
+      }
+    },
+    {
+      "id": "chklist",
+      "name": "CheckBoxList",
+      "icon": "☑️",
+      "category": "List",
+      "description": "Group of checkboxes.",
+      "properties": {
+        "items": ["Option A", "Option B", "Option C", "Option D"],
+        "layout": "vertical"
+      }
+    },
+    {
+      "id": "rad",
+      "name": "RadioButton",
+      "icon": "🔘",
+      "category": "Input",
+      "description": "Single radio option with label.",
+      "properties": {
+        "text": "Select this option",
+        "groupName": "group1",
+        "checked": false,
+        "enabled": true
+      }
+    },
+    {
+      "id": "radlist",
+      "name": "RadioButtonList",
+      "icon": "🔘",
+      "category": "List",
+      "description": "Group of radio buttons — only one selectable.",
+      "properties": {
+        "items": ["Small", "Medium", "Large", "Extra Large"],
+        "layout": "vertical",
+        "selectedIndex": 1
+      }
+    },
+    {
+      "id": "ddl",
+      "name": "DropDownList",
+      "icon": "📋",
+      "category": "List",
+      "description": "Select dropdown with options.",
+      "properties": {
+        "items": ["-- Select --", "India", "USA", "UK", "Canada", "Australia"],
+        "selectedIndex": 0,
+        "enabled": true
+      }
+    },
+    {
+      "id": "lst",
+      "name": "ListBox",
+      "icon": "📋",
+      "category": "List",
+      "description": "Multi-select scrollable list.",
+      "properties": {
+        "items": ["C#", "JavaScript", "Python", "Java", "Go", "Rust"],
+        "rows": 4,
+        "multiple": true
+      }
+    },
+    {
+      "id": "lnk",
+      "name": "HyperLink",
+      "icon": "🔗",
+      "category": "Navigation",
+      "description": "Styled clickable link.",
+      "properties": {
+        "text": "Visit GitHub",
+        "url": "https://github.com/Bhandarihansraj/netcn",
+        "target": "_blank"
+      }
+    },
+    {
+      "id": "img",
+      "name": "Image",
+      "icon": "🖼️",
+      "category": "Display",
+      "description": "Displays an image from a URL.",
+      "properties": {
+        "src": "https://via.placeholder.com/300x120/1a1a2e/f1c40f?text=netcn+Image",
+        "alt": "Sample Image",
+        "width": "100%"
+      }
+    },
+    {
+      "id": "fu",
+      "name": "FileUpload",
+      "icon": "📁",
+      "category": "Input",
+      "description": "File picker with drag-and-drop zone.",
+      "properties": {
+        "accept": "*/*",
+        "multiple": false
+      }
+    },
+    {
+      "id": "cal",
+      "name": "Calendar",
+      "icon": "📅",
+      "category": "Input",
+      "description": "Interactive date picker calendar.",
+      "properties": {
+        "selectedDate": "",
+        "minDate": "",
+        "maxDate": ""
+      }
+    },
+    {
+      "id": "pnl",
+      "name": "Panel",
+      "icon": "📦",
+      "category": "Layout",
+      "description": "Container panel with optional header.",
+      "properties": {
+        "headerText": "Panel Title",
+        "content": "This is a collapsible panel container.",
+        "collapsed": false
+      }
+    },
+    {
+      "id": "bl",
+      "name": "BulletedList",
+      "icon": "📝",
+      "category": "Display",
+      "description": "Styled bulleted or numbered list.",
+      "properties": {
+        "items": ["First item", "Second item", "Third item", "Fourth item"],
+        "style": "disc"
+      }
+    }
+  ]
+}

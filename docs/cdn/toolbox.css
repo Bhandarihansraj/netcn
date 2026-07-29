@@ -1,0 +1,715 @@
+/* ============================================================
+   netcn Toolbox CDN — Premium Parking Lot Theme
+   Version: 1.0.0
+   Usage: <link rel="stylesheet" href="https://bhandarihansraj.github.io/netcn/cdn/toolbox.css" />
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* ── Reset & Base ────────────────────────────────────── */
+.netcn-toolbox,
+.netcn-toolbox * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.netcn-toolbox {
+    max-width: 1200px;
+    margin: 24px auto;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+/* ── Header ──────────────────────────────────────────── */
+.netcn-header {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    padding: 28px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.netcn-header h2 {
+    color: #ffffff;
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.netcn-header .netcn-badge {
+    background: rgba(255, 255, 255, 0.12);
+    color: #a0aec0;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.netcn-description {
+    color: #a0aec0;
+    font-size: 0.9rem;
+    padding: 0 32px 20px;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+}
+
+/* ── Parking Lot Board ───────────────────────────────── */
+.netcn-parking-lot {
+    background: #2d3436;
+    background-image:
+        radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);
+    padding: 24px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    min-height: 500px;
+}
+
+/* ── Parking Zone (Column) ───────────────────────────── */
+.netcn-zone {
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.3s ease, background 0.3s ease;
+}
+
+.netcn-zone.drag-over {
+    border-color: #f1c40f;
+    background: rgba(241, 196, 15, 0.08);
+}
+
+.netcn-zone-header {
+    background: linear-gradient(135deg, #f39c12, #f1c40f);
+    padding: 10px 16px;
+    border-radius: 10px 10px 0 0;
+    text-align: center;
+}
+
+.netcn-zone-header h4 {
+    color: #2d3436;
+    font-size: 0.8rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.netcn-zone-header .netcn-count {
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.15);
+    color: #2d3436;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: 6px;
+}
+
+.netcn-zone-body {
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-height: 120px;
+}
+
+/* ── Car Card ────────────────────────────────────────── */
+.netcn-car {
+    border-radius: 10px;
+    padding: 14px 16px;
+    cursor: grab;
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.netcn-car::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px 10px 0 0;
+}
+
+.netcn-car::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 12px;
+    right: 12px;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 2px;
+}
+
+.netcn-car:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.netcn-car:active {
+    cursor: grabbing;
+    transform: scale(0.97);
+}
+
+.netcn-car.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.netcn-car-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.netcn-car-id {
+    font-size: 0.6rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.netcn-car-icon {
+    font-size: 1rem;
+    opacity: 0.5;
+}
+
+.netcn-car-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+/* Color variants for car cards */
+.netcn-car.car-red     { background: linear-gradient(135deg, #e74c3c, #c0392b); color: #fff; }
+.netcn-car.car-blue    { background: linear-gradient(135deg, #3498db, #2980b9); color: #fff; }
+.netcn-car.car-green   { background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; }
+.netcn-car.car-purple  { background: linear-gradient(135deg, #9b59b6, #8e44ad); color: #fff; }
+.netcn-car.car-orange  { background: linear-gradient(135deg, #e67e22, #d35400); color: #fff; }
+.netcn-car.car-teal    { background: linear-gradient(135deg, #1abc9c, #16a085); color: #fff; }
+.netcn-car.car-white   { background: linear-gradient(135deg, #ecf0f1, #bdc3c7); color: #2d3436; }
+.netcn-car.car-yellow  { background: linear-gradient(135deg, #f1c40f, #f39c12); color: #2d3436; }
+
+.netcn-car.car-white .netcn-car-id,
+.netcn-car.car-yellow .netcn-car-id {
+    background: rgba(0, 0, 0, 0.1);
+    color: #2d3436;
+}
+
+/* ── Loading & Error States ──────────────────────────── */
+.netcn-loading {
+    text-align: center;
+    padding: 60px 24px;
+    color: #a0aec0;
+    background: #1a1a2e;
+}
+
+.netcn-loading .spinner {
+    width: 36px;
+    height: 36px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-top-color: #f1c40f;
+    border-radius: 50%;
+    animation: netcn-spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes netcn-spin {
+    to { transform: rotate(360deg); }
+}
+
+.netcn-error {
+    text-align: center;
+    padding: 60px 24px;
+    color: #e74c3c;
+    background: #1a1a2e;
+}
+
+/* ── Responsive ──────────────────────────────────────── */
+@media (max-width: 768px) {
+    .netcn-parking-lot {
+        grid-template-columns: 1fr 1fr;
+        padding: 12px;
+        gap: 12px;
+    }
+    .netcn-header { padding: 20px; }
+    .netcn-header h2 { font-size: 1.2rem; }
+    .netcn-controls-board { flex-direction: column; }
+    .netcn-controls-sidebar { width: 100%; max-height: 200px; overflow-y: auto; }
+}
+
+@media (max-width: 480px) {
+    .netcn-parking-lot {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Toolbar (Add / Reset) ───────────────────────────── */
+.netcn-toolbar {
+    display: flex;
+    gap: 10px;
+    padding: 12px 20px;
+    background: #161b22;
+    border-bottom: 1px solid #30363d;
+}
+
+.netcn-btn {
+    padding: 8px 18px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.netcn-btn-add {
+    background: linear-gradient(135deg, #2ecc71, #27ae60);
+    color: #fff;
+}
+.netcn-btn-add:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(46, 204, 113, 0.4); }
+
+.netcn-btn-reset {
+    background: rgba(255, 255, 255, 0.08);
+    color: #a0aec0;
+}
+.netcn-btn-reset:hover { background: rgba(255, 255, 255, 0.15); }
+
+/* ── Card Action Buttons ─────────────────────────────── */
+.netcn-car-actions {
+    display: flex;
+    gap: 4px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.netcn-car:hover .netcn-car-actions { opacity: 1; }
+
+.netcn-car-btn {
+    background: rgba(0, 0, 0, 0.25);
+    border: none;
+    color: inherit;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+.netcn-car-btn:hover { background: rgba(0, 0, 0, 0.4); }
+.netcn-car-btn-del:hover { background: rgba(231, 76, 60, 0.6); }
+
+/* ── Modal ───────────────────────────────────────────── */
+.netcn-modal-overlay {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: netcn-fadeIn 0.2s ease;
+}
+
+@keyframes netcn-fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.netcn-modal {
+    background: #1a1a2e;
+    border: 1px solid #30363d;
+    border-radius: 16px;
+    padding: 28px;
+    width: 380px;
+    max-width: 90vw;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.netcn-modal h3 { color: #f0f6fc; margin-bottom: 20px; font-size: 1.2rem; }
+.netcn-modal label { display: block; color: #8b949e; font-size: 0.8rem; font-weight: 600; margin: 12px 0 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+.netcn-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    color: #f0f6fc;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.netcn-input:focus { border-color: #f1c40f; }
+
+.netcn-color-picker { display: flex; gap: 8px; padding: 8px 0; }
+.netcn-color-dot {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+.netcn-color-dot:hover { transform: scale(1.2); }
+.netcn-color-dot.selected { border-color: #fff; transform: scale(1.2); box-shadow: 0 0 8px rgba(255, 255, 255, 0.3); }
+
+.netcn-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.netcn-modal-actions .netcn-btn { flex: 1; text-align: center; }
+
+/* ── Standard Controls Board ─────────────────────────── */
+.netcn-controls-board {
+    display: flex;
+    min-height: 500px;
+    background: #0d1117;
+}
+
+.netcn-controls-sidebar {
+    width: 220px;
+    background: #161b22;
+    border-right: 1px solid #30363d;
+    padding: 0;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.netcn-sidebar-title {
+    color: #8b949e;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 16px 16px 10px;
+    margin: 0;
+}
+
+.netcn-control-item {
+    padding: 10px 16px;
+    color: #c9d1d9;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    border-left: 3px solid transparent;
+}
+
+.netcn-control-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    color: #f0f6fc;
+}
+
+.netcn-control-item.active {
+    background: rgba(241, 196, 15, 0.08);
+    border-left-color: #f1c40f;
+    color: #f1c40f;
+}
+
+.netcn-ctrl-icon { font-size: 1rem; margin-right: 4px; }
+
+/* ── Preview Area ────────────────────────────────────── */
+.netcn-controls-preview {
+    flex: 1;
+    padding: 24px;
+}
+
+.netcn-preview-header h4 { color: #f0f6fc; margin: 0 0 4px; font-size: 1.1rem; }
+.netcn-preview-hint { color: #484f58; font-size: 0.8rem; margin: 0 0 20px; }
+
+.netcn-ctrl-info {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #21262d;
+}
+.netcn-ctrl-info h3 { color: #f0f6fc; font-size: 1.3rem; margin: 0 0 8px; }
+.netcn-ctrl-info p { color: #8b949e; font-size: 0.85rem; margin: 0 0 10px; }
+.netcn-ctrl-cat {
+    background: rgba(241, 196, 15, 0.15);
+    color: #f1c40f;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.netcn-ctrl-demo {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.netcn-demo-label {
+    padding: 10px 16px;
+    background: #21262d;
+    color: #8b949e;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.netcn-demo-area {
+    padding: 24px;
+}
+
+/* ── Demo Control Styles ─────────────────────────────── */
+.netcn-demo-btn {
+    padding: 10px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+.netcn-demo-btn.btn-primary { background: linear-gradient(135deg, #3498db, #2980b9); color: #fff; }
+.netcn-demo-btn.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(52, 152, 219, 0.4); }
+.netcn-demo-btn.btn-secondary { background: #30363d; color: #c9d1d9; }
+
+.netcn-demo-label-ctrl { color: #f0f6fc; font-size: 1rem; }
+
+.netcn-demo-input {
+    width: 100%;
+    padding: 10px 14px;
+    background: #0d1117;
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    color: #f0f6fc;
+    font-size: 0.9rem;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+.netcn-demo-input:focus { border-color: #3498db; }
+
+.netcn-demo-check {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #c9d1d9;
+    font-size: 0.9rem;
+    cursor: pointer;
+    padding: 4px 0;
+}
+.netcn-demo-check input { accent-color: #f1c40f; width: 16px; height: 16px; cursor: pointer; }
+
+.netcn-demo-link {
+    color: #58a6ff;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.netcn-demo-link:hover { color: #79c0ff; text-decoration: underline; }
+
+.netcn-demo-img { border-radius: 8px; max-width: 100%; }
+
+.netcn-demo-upload {
+    border: 2px dashed #30363d;
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    color: #8b949e;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.netcn-demo-upload:hover, .netcn-demo-upload.active { border-color: #f1c40f; background: rgba(241, 196, 15, 0.05); }
+
+.netcn-cal-display {
+    margin-top: 12px;
+    color: #f1c40f;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.netcn-demo-panel {
+    border: 1px solid #30363d;
+    border-radius: 8px;
+    overflow: hidden;
+}
+.netcn-panel-header {
+    padding: 12px 16px;
+    background: #21262d;
+    color: #f0f6fc;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.netcn-panel-header:hover { background: #30363d; }
+.netcn-panel-body { padding: 16px; color: #c9d1d9; font-size: 0.9rem; }
+
+.netcn-demo-list {
+    color: #c9d1d9;
+    padding-left: 20px;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+/* ── Sidebar Hint ────────────────────────────────────── */
+.netcn-sidebar-hint {
+    color: #484f58;
+    font-size: 0.7rem;
+    padding: 0 16px 12px;
+    margin: 0;
+    border-bottom: 1px solid #21262d;
+}
+
+.netcn-control-item.dragging { opacity: 0.5; background: rgba(241, 196, 15, 0.1); }
+
+/* ── Canvas Designer ─────────────────────────────────── */
+.netcn-canvas-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+.netcn-canvas-header h4 { color: #f0f6fc; margin: 0; font-size: 1.1rem; flex: 1; }
+
+.netcn-canvas-count {
+    background: rgba(241, 196, 15, 0.15);
+    color: #f1c40f;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 10px;
+}
+
+.netcn-canvas-body {
+    min-height: 350px;
+    border: 2px dashed #30363d;
+    border-radius: 12px;
+    padding: 16px;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-content: flex-start;
+}
+.netcn-canvas-body.drag-over {
+    border-color: #f1c40f;
+    background: rgba(241, 196, 15, 0.04);
+}
+
+.netcn-canvas-item {
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 180px;
+    max-width: 280px;
+    flex: 1;
+    animation: netcn-slideIn 0.2s ease;
+}
+@keyframes netcn-slideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.netcn-canvas-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: #21262d;
+    color: #8b949e;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.netcn-canvas-btn, .netcn-canvas-del {
+    background: none;
+    border: none;
+    color: #484f58;
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    margin-left: 2px;
+}
+.netcn-canvas-btn:hover { color: #58a6ff; background: rgba(88, 166, 255, 0.1); }
+.netcn-canvas-del:hover { color: #e74c3c; background: rgba(231, 76, 60, 0.1); }
+
+.netcn-canvas-item-body { padding: 12px; }
+
+/* ── ASP.NET Practicals ──────────────────────────────── */
+.netcn-prac-controls {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.netcn-prac-badge {
+    background: rgba(52, 152, 219, 0.15);
+    color: #3498db;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.netcn-code-block {
+    background: #0d1117;
+    color: #79c0ff;
+    padding: 16px 20px;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    margin: 0;
+}
+
+.netcn-prac-result {
+    margin-top: 12px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(4px);
+}
+.netcn-prac-result.active {
+    opacity: 1;
+    transform: translateY(0);
+    background: rgba(46, 204, 113, 0.1);
+    border: 1px solid rgba(46, 204, 113, 0.3);
+    color: #2ecc71;
+}
+
+.netcn-testimonial {
+    margin-top: 16px;
+    padding: 20px;
+    border-radius: 12px;
+    background: rgba(241, 196, 15, 0.06);
+    border: 1px solid rgba(241, 196, 15, 0.15);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+.netcn-testimonial.active { opacity: 1; }
+.netcn-testi-quote { color: #f0f6fc; font-size: 1rem; font-style: italic; line-height: 1.5; margin: 0 0 8px; }
+.netcn-testi-name { color: #f1c40f; font-size: 0.85rem; font-weight: 600; margin: 0; }

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>netcn — .NET Toolbox CDN</title>
+    <meta name="description" content="A data-driven CDN for .NET toolbox components. Add tools to any project with just 2 lines of HTML." />
+    <link rel="stylesheet" href="cdn/toolbox.css" />
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap');
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Inter', sans-serif; background: #0d1117; color: #c9d1d9; min-height: 100vh; }
+
+        .hero {
+            text-align: center;
+            padding: 60px 24px 40px;
+            background: linear-gradient(180deg, #161b22 0%, #0d1117 100%);
+        }
+        .hero h1 { font-size: 2.8rem; font-weight: 800; color: #f0f6fc; letter-spacing: -1px; margin-bottom: 12px; }
+        .hero h1 span { background: linear-gradient(135deg, #f1c40f, #e67e22); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero p { font-size: 1.1rem; color: #8b949e; max-width: 600px; margin: 0 auto 32px; line-height: 1.6; }
+
+        .code-block {
+            background: #161b22; border: 1px solid #30363d; border-radius: 12px;
+            padding: 20px 28px; max-width: 700px; margin: 0 auto 48px; text-align: left;
+            font-family: 'Consolas', 'Monaco', monospace; font-size: 0.85rem; color: #79c0ff; line-height: 1.8; overflow-x: auto;
+        }
+        .code-block .comment { color: #8b949e; }
+        .code-block .tag { color: #7ee787; }
+        .code-block .attr { color: #d2a8ff; }
+        .code-block .str { color: #a5d6ff; }
+
+        .section-title { text-align: center; font-size: 1.3rem; font-weight: 700; color: #f0f6fc; margin-bottom: 8px; padding-top: 48px; }
+        .section-subtitle { text-align: center; color: #8b949e; margin-bottom: 32px; font-size: 0.9rem; }
+        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
+
+        footer { text-align: center; padding: 32px; color: #484f58; font-size: 0.8rem; border-top: 1px solid #21262d; }
+        footer a { color: #58a6ff; text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+        <h1>🚀 <span>netcn</span> Toolbox CDN</h1>
+        <p>A data-driven CDN for .NET toolbox components. Add interactive tools to <strong>any project</strong> with just 2 lines of HTML. No backend required.</p>
+        <div class="code-block">
+            <span class="comment">&lt;!-- Step 1: Include the CDN --&gt;</span><br />
+            <span class="tag">&lt;link</span> <span class="attr">rel=</span><span class="str">"stylesheet"</span> <span class="attr">href=</span><span class="str">"https://bhandarihansraj.github.io/netcn/cdn/toolbox.css"</span> <span class="tag">/&gt;</span><br />
+            <span class="tag">&lt;script</span> <span class="attr">src=</span><span class="str">"https://bhandarihansraj.github.io/netcn/cdn/toolbox-engine.js"</span><span class="tag">&gt;&lt;/script&gt;</span><br /><br />
+            <span class="comment">&lt;!-- Step 2: Drop a div and you're done! --&gt;</span><br />
+            <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"netcn-toolbox"</span> <span class="attr">data-tool=</span><span class="str">"parking-lot"</span><span class="tag">&gt;&lt;/div&gt;</span><br />
+            <span class="tag">&lt;div</span> <span class="attr">class=</span><span class="str">"netcn-toolbox"</span> <span class="attr">data-tool=</span><span class="str">"standard-controls"</span><span class="tag">&gt;&lt;/div&gt;</span>
+        </div>
+    </div>
+
+    <!-- TOOL 1: ASP.NET Project Generator -->
+    <h2 class="section-title">⚡ Project Generator</h2>
+    <p class="section-subtitle">Customize and download ready-to-run ASP.NET projects instantly (like Spring Initializr).</p>
+    <div class="demo-container">
+        <div class="netcn-toolbox" data-tool="aspnet-generator"></div>
+    </div>
+
+    <!-- TOOL 2: Standard Controls -->
+    <h2 class="section-title">⚙️ Standard Controls</h2>
+    <p class="section-subtitle">Drag controls from the toolbox and drop them onto the live canvas — just like Visual Studio!</p>
+    <div class="demo-container">
+        <div class="netcn-toolbox" data-tool="standard-controls"></div>
+    </div>
+
+    <!-- TOOL 2: ASP.NET Practicals -->
+    <h2 class="section-title">📚 ASP.NET Practicals (1 to 9)</h2>
+    <p class="section-subtitle">All 9 ASP.NET practicals with C# code + live interactive demos. Try them!</p>
+    <div class="demo-container">
+        <div class="netcn-toolbox" data-tool="aspnet-practicals"></div>
+    </div>
+
+    <!-- TOOL 3: Parking Lot -->
+    <h2 class="section-title">🅿️ Parking Lot</h2>
+    <p class="section-subtitle">Add, edit, remove, and drag cards between zones. State is saved automatically.</p>
+    <div class="demo-container">
+        <div class="netcn-toolbox" data-tool="parking-lot"></div>
+    </div>
+
+    <footer>
+        Built with ❤️ by <a href="https://github.com/Bhandarihansraj" target="_blank">Bhandarihansraj</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/Bhandarihansraj/netcn" target="_blank">View on GitHub</a>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="cdn/toolbox-engine.js"></script>
+</body>
+</html>
